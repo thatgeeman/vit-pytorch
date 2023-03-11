@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "vit-pytorch"
+  site-url: "https://thatgeeman.github.io/vit-pytorch"
+  description: "PyTorch implementation of ViT based on the ICLR2021 paper by Dosovitskiy et. al."
+  repo-branch: main
+  repo-url: "https://github.com/thatgeeman/vit-pytorch"
