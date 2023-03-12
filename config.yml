@@ -1,8 +1,9 @@
 patch:
   size: 16
   in_ch: 3
-  out_ch: 768 # also the embedding size
-  n: 196 # h*w/(p**2)
+  out_ch: 768 # embedding size, size**2 * in_ch
+  n: 196 # sequence length, aka number of patches h*w/(size**2)
 
 data:
   bs: 3
+  hw: [224, 224]

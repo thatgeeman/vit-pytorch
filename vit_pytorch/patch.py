@@ -26,42 +26,37 @@ from fastcore.basics import filter_dict, filter_values, val2idx
 # %% ../nbs/00_patch.ipynb 26
 import torchvision.transforms as T
 
-# %% ../nbs/00_patch.ipynb 48
+# %% ../nbs/00_patch.ipynb 52
 class PatchEmbedding(nn.Module):
     def __init__(self, channel_first=True) -> None:
         super().__init__()
         # patch related
         patch_size = config["patch"]["size"]
         in_ch = config["patch"]["in_ch"]
-        out_ch = config["patch"]["out_ch"]
-        n_patches = config["patch"]["n"]
+        embed_dim = config["patch"]["out_ch"] # out_ch
+        seq_len = config["patch"]["n"] # n_patches
         # data related
         bs = config["data"]["bs"]
         
         self.conv2d = nn.Conv2d(
             in_channels=in_ch,
-            out_channels=out_ch,
+            out_channels=embed_dim,
             kernel_size=patch_size,
             stride=patch_size,
         )
         self.channel_first = channel_first
         self.flatten = nn.Flatten(start_dim=2, end_dim=-1)
         # for all patches in the image prepend the class token
-        ones_token = torch.ones(bs, 1, out_ch) # bs, 1, embed_dim
-        self.class_token = nn.Parameter(ones_token, requires_grad=True)
+        cls_token = torch.ones(bs, 1, embed_dim) # bs, 1, embed_dim
+        self.class_token = nn.Parameter(cls_token, requires_grad=True)
         # for all images in the batch what is the order of patches
-        ones_embed = torch.ones(1, n_patches+1, out_ch) # 1, n_patches+1, embed_dim
-        self.pos_embed = nn.Parameter(ones_embed, requires_grad=True)
+        pos_embed = torch.ones(1, int(seq_len)+1, embed_dim) # 1, n_patches+1, embed_dim
+        self.pos_embed = nn.Parameter(pos_embed, requires_grad=True)
 
     def forward(self, x):
         if not self.channel_first:
             x = x.permute(0, 3, 1, 2)
-        # print(x.shape)
-        x = self.conv2d(x)
-        # print(x.shape)
-        x = self.flatten(x) 
-        x = x.permute(0, 2, 1) # (bs, patch_dim, embed_dim)
-        x = torch.concat([self.class_token, x], dim=1) 
-        x += self.pos_embed
+        x = self.flatten(self.conv2d(x)).permute(0, 2, 1) # (bs, seq_len, embed_dim)
+        x = torch.concat([self.class_token, x], dim=1) + self.pos_embed
         return x
 
