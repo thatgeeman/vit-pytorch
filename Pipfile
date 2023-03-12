@@ -17,6 +17,7 @@ ipykernel = "*"
 matplotlib = "*"
 
 [dev-packages]
+vit-pytorch = {editable = true, path = "."}
 
 [requires]
 python_version = "3.9"

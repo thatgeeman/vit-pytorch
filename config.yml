@@ -4,6 +4,11 @@ patch:
   out_ch: 768 # embedding size, size**2 * in_ch
   n: 196 # sequence length, aka number of patches h*w/(size**2)
 
+encoder:
+  msa_heads: 12
+  mlp_size: 3072
+  mlp_dropout: 0.0
+
 data:
   bs: 3
   hw: [224, 224]

@@ -3,3 +3,4 @@ website:
     contents:
       - index.ipynb
       - 00_patch.ipynb
+      - 01_encoder.ipynb
