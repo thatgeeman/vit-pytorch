@@ -1,14 +1,15 @@
 patch:
-  size: 16
-  in_ch: 3
+  size: 16 # patch size
+  in_ch: 3 # input channels
   out_ch: 768 # embedding size, size**2 * in_ch
   n: 196 # sequence length, aka number of patches h*w/(size**2)
 
 encoder:
+  layers: 12
   msa_heads: 12
   mlp_size: 3072
   mlp_dropout: 0.0
 
 data:
-  bs: 3
-  hw: [224, 224]
+  bs: 3 # batch size
+  hw: [224, 224] # image size
