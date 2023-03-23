@@ -15,6 +15,7 @@ pytorch-lightning = "*"
 pre-commit = "*"
 ipykernel = "*"
 matplotlib = "*"
+einops = "*"
 
 [dev-packages]
 vit-pytorch = {editable = true, path = "."}
