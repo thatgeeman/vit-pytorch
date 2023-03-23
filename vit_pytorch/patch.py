@@ -22,7 +22,10 @@ from fastcore.basics import filter_dict, filter_values, val2idx
 # %% ../nbs/00_patch.ipynb 26
 import torchvision.transforms as T
 
-# %% ../nbs/00_patch.ipynb 52
+# %% ../nbs/00_patch.ipynb 47
+from einops import repeat
+
+# %% ../nbs/00_patch.ipynb 56
 class PatchEmbedding(nn.Module):
     def __init__(self, config, channel_first=True) -> None:
         super().__init__()
@@ -42,17 +45,20 @@ class PatchEmbedding(nn.Module):
         )
         self.channel_first = channel_first
         self.flatten = nn.Flatten(start_dim=2, end_dim=-1)
-        # for all patches in the image prepend the class token
-        cls_token = torch.ones(bs, 1, embed_dim) # bs, 1, embed_dim
-        self.class_token = nn.Parameter(cls_token, requires_grad=True)
+        # class tokens are shared among batch items
+        # 1, 1, embed_dim
+        self.cls_token = nn.Parameter(torch.ones(1, 1, embed_dim), requires_grad=True)     
         # for all images in the batch what is the order of patches
-        pos_embed = torch.ones(1, int(seq_len)+1, embed_dim) # 1, n_patches+1, embed_dim
-        self.pos_embed = nn.Parameter(pos_embed, requires_grad=True)
+        # 1, n_patches+1, embed_dim
+        self.pos_embed = nn.Parameter(torch.ones(1, int(seq_len)+1, embed_dim), requires_grad=True)
 
     def forward(self, x):
+        bs = x.shape[0]
+        # repeat at each forward, not as learnable, need a class token with (1, 1, embed_dim)
+        cls_tokens = repeat(self.cls_token, '1 1 d -> bs 1 d', bs = bs)
         if not self.channel_first:
             x = x.permute(0, 3, 1, 2)
         x = self.flatten(self.conv2d(x)).permute(0, 2, 1) # (bs, seq_len, embed_dim)
-        x = torch.concat([self.class_token, x], dim=1) + self.pos_embed
+        x = torch.concat([cls_tokens, x], dim=1) + self.pos_embed
         return x
 
