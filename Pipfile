@@ -16,6 +16,8 @@ pre-commit = "*"
 ipykernel = "*"
 matplotlib = "*"
 einops = "*"
+torchmetrics = "==1.1.0"
+scikit-learn = "==1.1.0"
 
 [dev-packages]
 vit-pytorch = {editable = true, path = "."}

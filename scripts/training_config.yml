@@ -1,0 +1,28 @@
+---
+logging_level: logging.INFO
+patch:
+  size: 16
+  # patch size
+  in_ch: 3
+  # input channels
+  out_ch: 768
+  # embedding size, size**2 * in_ch
+  n: 196
+  # sequence length, aka number of patches h*w/(size**2)
+  emb_dropout: 0.1
+encoder:
+  layers: 12
+  msa_heads: 12
+  mlp_size: 3072
+  attn_dropout: 0
+  mlp_dropout: 0.1
+model:
+  n_classes: 10
+  training: True
+  clf_dropout: 0.1
+  clf_hidden_units: 512
+data:
+  test_size: 0.2
+  path: input
+  bs: 3 # batch size
+  hw: [224, 224] # image size

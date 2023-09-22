@@ -35,4 +35,11 @@ d = { 'settings': { 'branch': 'main',
                                    'vit_pytorch.patch.PatchEmbedding.__init__': ( 'patch.html#patchembedding.__init__',
                                                                                   'vit_pytorch/patch.py'),
                                    'vit_pytorch.patch.PatchEmbedding.forward': ( 'patch.html#patchembedding.forward',
-                                                                                 'vit_pytorch/patch.py')}}}
+                                                                                 'vit_pytorch/patch.py')},
+            'vit_pytorch.utils': { 'vit_pytorch.utils.LossAccumulator': ('utils.html#lossaccumulator', 'vit_pytorch/utils.py'),
+                                   'vit_pytorch.utils.LossAccumulator.__init__': ( 'utils.html#lossaccumulator.__init__',
+                                                                                   'vit_pytorch/utils.py'),
+                                   'vit_pytorch.utils.LossAccumulator.compute': ( 'utils.html#lossaccumulator.compute',
+                                                                                  'vit_pytorch/utils.py'),
+                                   'vit_pytorch.utils.LossAccumulator.update': ( 'utils.html#lossaccumulator.update',
+                                                                                 'vit_pytorch/utils.py')}}}
